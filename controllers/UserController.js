@@ -13,7 +13,7 @@ class UserController {
 
         this.onSubmit();
         this.onEdit();
-        this.sessionAll();
+        this.selectAll();
     }
 
     onEdit() {
@@ -283,40 +283,15 @@ class UserController {
         // Devemos retornar o nosso objectUser
     }
 
-    // ******************** SESSION E LOCAL STORAGE - INICIO - CARREGA DADOS DO STRAGE *************//
-    getUsersStorage() {
-
-        // Temos que trabalhar com um array, pois dentro de um objeto,
-        // Temos muitos "atributos"/variáveis diferentes para ser armazenadas
-        let users = [];
-        
-        // Primeiro precisamos carregar os valores que já existam (caso existam)
-        // Então precisamos chegar se tem algum valor
-        
-        // --------> Usando o SessionStorage
-        // if(sessionStorage.getItem("users")) {
-        
-        // --------> Usando o LocalStorage
-        if(localStorage.getItem("users")) {
-
-            users = JSON.parse(localStorage.getItem("users"))
-
-        }
-
-        return users;
-    }
-
-    // ******************** SESSION E LOCAL STORAGE - FIM - CARREGA DADOS DO STRAGE ****************//
-
     // ******************** SESSION E LOCAL STORAGE - INICIO LIST **********************************//
 
     // O método "secelcAll()" além de buscar os dados do Sesseion Storagem,
     // também vai chamar o método "addLine()" para adicionar os valores em tela
-    sessionAll() {
+    selectAll() {
     
         // Primeiro precisamos carregar os valores que já existam (caso existam)
         // Então precisamos chegar se tem algum valor
-        let users = this.getUsersStorage();
+        let users = User.getUsersStorage();
 
         users.forEach(dataUser => {
 
@@ -325,7 +300,7 @@ class UserController {
 
             user.loadFromJSON(dataUser);
 
-            this.addLine(dataUser);
+            this.addLine(user);
 
         })
     }
@@ -388,8 +363,18 @@ class UserController {
 
             // console.log("Entrei no método excluir");
             if(confirm("Deseja realmente excluir?")) {
+
+                let user = new User();
+
+                // Esterealizando o objeto
+                user.loadFromJSON(JSON.parse(tr.dataset.users));
+
+                //Chamando o método de remoção do item na nossa classe User.js
+                user.remove();
                 
                 // console.log("Passei pelo método 'confirme'")
+                // Essa linha de comando abaixo, remove apenas da tela
+                // Mas não remove do Local Storage
                 tr.remove();
 
                 this.updateCount();

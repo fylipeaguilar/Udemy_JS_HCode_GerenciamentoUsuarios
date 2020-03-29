@@ -131,10 +131,6 @@ class User {
         }
     }
 
-
-
- 
-
     // ******************** SESSION E LOCAL STORAGE - INICIO - CARREGA DADOS DO STRAGE *************//
     
     //Como ele não usa o this, ele pode ser um método static
@@ -168,12 +164,23 @@ class User {
 
         console.log("Entrei na getNewId de ID")
 
+        // Como no Local Storage as informações são armazenas como string
+        // Temos que fazer um parseInt.
+        let usersID = parseInt(localStorage.getItem("usersID"));
+
         // Esse ID é preciso estar num escopo global.
-        if(!window.id) window.id = 0;
+        if(!usersID > 0) {
 
-        id++;
+            usersID = 0;
 
-        console.log("getNewId: ", id)
+        }
+        
+        usersID++;
+
+        // Guardando o vaor de usersID no Local Storage
+        localStorage.setItem("usersID", usersID);
+
+        console.log("getNewId: ", usersID)
         return this.id;
     
     }
@@ -198,9 +205,10 @@ class User {
             // O método "map", além de mapear (encontrar), permite já alterar o array
             users.map( u => {
                
-                if(u._id === this.id) {
+                if(u._id == this.id) {
 
-                    u = this;
+                    // Mescla pra mim o próprio "u" com o que está vindo do "this"
+                    Object.assign(u, this);
 
                 }
 
@@ -242,6 +250,33 @@ class User {
         localStorage.setItem("users",JSON.stringify(users))
         // console.log("Entrou dentro do método insert e os valores de user são: ", sessionStorage)
         
+    }
+
+    remove() {
+
+        // Primeiro precisamos carregar os valores que já existam (caso existam)
+        // Então precisamos chegar se tem algum valor
+        let users = User.getUsersStorage();
+        
+        // Identificando os dados dentro do objeto pelo array
+        users.forEach((userData, index) => {
+
+            if(this._id == userData) {
+
+                // O método splice remove do Local Storage
+                // Syntaxe: users.splice(index, 1), quer dizer que vai remover "1" elemento após o indice encontrado
+                users.splice(index, 1);
+
+            }
+            
+        });
+
+        // Guardando os dados que sobraram do array no Local Storage
+
+        // --------- Usando o Local Storage ---------------//
+        localStorage.setItem("users",JSON.stringify(users))
+        // console.log("Entrou dentro do método insert e os valores de user são: ", sessionStorage)
+
     }
     
 }
