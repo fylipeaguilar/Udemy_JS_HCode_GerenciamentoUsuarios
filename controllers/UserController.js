@@ -367,7 +367,7 @@ class UserController {
                 let user = new User();
 
                 // Esterealizando o objeto
-                user.loadFromJSON(JSON.parse(tr.dataset.users));
+                user.loadFromJSON(JSON.parse(tr.dataset.user));
 
                 //Chamando o método de remoção do item na nossa classe User.js
                 user.remove();

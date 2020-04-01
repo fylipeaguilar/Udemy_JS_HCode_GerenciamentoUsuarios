@@ -162,7 +162,7 @@ class User {
    // Método para fazer novos id. Lmplementado para ser usado com no Local Storage
    getNewID() {
 
-        console.log("Entrei na getNewId de ID")
+        // console.log("Entrei na getNewId de ID")
 
         // Como no Local Storage as informações são armazenas como string
         // Temos que fazer um parseInt.
@@ -180,8 +180,8 @@ class User {
         // Guardando o vaor de usersID no Local Storage
         localStorage.setItem("usersID", usersID);
 
-        console.log("getNewId: ", usersID)
-        return this.id;
+        // console.log("getNewId: ", usersID)
+        return usersID;
     
     }
 
@@ -194,13 +194,13 @@ class User {
         let users = User.getUsersStorage();
 
         // ****** DEBUG ******
-        console.log("Entrei no método save e o objeto desse usuário é: ", users)
+        // console.log("Entrei no método save e o objeto desse usuário é: ", users)
 
         // Utilizando o recurso do ID (Chave Unica) para salvar na Local Storage
         if(this.id > 0) {
 
             // ****** DEBUG ******
-            console.log("Entrei na verificação de ID > 0: ", this.id)
+            // console.log("Entrei na verificação de ID > 0: ", this.id)
 
             // O método "map", além de mapear (encontrar), permite já alterar o array
             users.map( u => {
@@ -212,7 +212,7 @@ class User {
 
                 }
 
-                console.log("Passei pelo return do método map:" , u)
+                // console.log("Passei pelo return do método map:" , u)
                 return u;
 
             });
@@ -220,19 +220,19 @@ class User {
         } else {
 
             // ****** DEBUG *******
-            console.log("Entrei na verificação do else e meu objeto é: ", users)
+            // console.log("Entrei na verificação do else e meu objeto é: ", users)
 
             // Como estou dentro da minha classe, eu posso manipular 
             // propriedade privada (neste caso o this._id)
             this._id = this.getNewID();
             
             // ****** DEBUG *******
-            console.log(this._id);
+            // console.log(this._id);
 
 
             // Adicionando os novos dados com o método push
             users.push(this);
-            console.log(this)
+            // console.log(this)
 
             // Session Storage trabalha com key/value (chave/valor)
             // Session Storage não salva os dados do objeto, apenas passando o objeto
@@ -257,11 +257,15 @@ class User {
         // Primeiro precisamos carregar os valores que já existam (caso existam)
         // Então precisamos chegar se tem algum valor
         let users = User.getUsersStorage();
+        console.log(users)
         
         // Identificando os dados dentro do objeto pelo array
         users.forEach((userData, index) => {
 
-            if(this._id == userData) {
+            if(this._id == userData._id) {
+
+                // ******** DEBUG ********
+                // console.log(userData, index)
 
                 // O método splice remove do Local Storage
                 // Syntaxe: users.splice(index, 1), quer dizer que vai remover "1" elemento após o indice encontrado
